@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Recomendación de Películas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-82R1BDtdvD5P7kw4ZlZtgKi53u7iCrJL0GL5UzK6o/87+Iw3FbIqDpS4S3GW65mZ8l//NqM4OrBqM6WqEBaSlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="background">
+    </div>
+    <div class="container">
+        <h1>Sistema de Recomendación de Películas</h1>
+        <form id="search-form">
+            <div class="search-field">
+                <label for="search-by1">Buscar por:</label>
+                <select id="search-by1" name="search-by1">
+                    <option value="id">ID</option>
+                    <option value="genre">Género</option>
+                    <option value="recommendations">Recomendaciones</option>
+                    <option value="favorite">Anime Favorito</option>
+                </select>
+                <input type="text" id="search-term1" name="search-term1" placeholder="Ingrese término de búsqueda">
+            </div>
+            <div class="search-field">
+                <label for="search-by2">Buscar por:</label>
+                <select id="search-by2" name="search-by2">
+                    <option value="id">ID</option>
+                    <option value="genre">Género</option>
+                    <option value="recommendations">Recomendaciones</option>
+                    <option value="favorite">Anime Favorito</option>
+                </select>
+                <input type="text" id="search-term2" name="search-term2" placeholder="Ingrese término de búsqueda">
+            </div>
+            <button type="submit">Buscar</button>
+        </form>
+        <div id="results">
+        </div>
+        <div class="social-icons">
+            <div class="social-icon">
+                <a href="https://wa.me/tunumerodeWhatsApp" target="_blank"><img src="image/wsp.png" alt="WhatsApp"></a>
+            </div>
+            <div class="social-icon">
+                <a href="https://www.facebook.com/tupagina" target="_blank"><img src="image/instagram.jpeg" alt="Facebook"></a>
+            </div>
+        </div>
+        
+
+        
+    </div>
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const searchBy1 = document.getElementById('search-by1').value;
+            const searchTerm1 = document.getElementById('search-term1').value;
+            const searchBy2 = document.getElementById('search-by2').value;
+            const searchTerm2 = document.getElementById('search-term2').value;
+            
+            console.log(`Búsqueda 1 - Por: ${searchBy1}, Término: ${searchTerm1}`);
+            console.log(`Búsqueda 2 - Por: ${searchBy2}, Término: ${searchTerm2}`);
+            
+        });
+    </script>
+</body>
+</html>
+
+
+
