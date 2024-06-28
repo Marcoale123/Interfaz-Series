@@ -2,10 +2,14 @@ import pandas as pd
 import networkx as nx
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+<<<<<<< HEAD
 from fastapi.responses import FileResponse
 from typing import List, Dict
 import matplotlib.pyplot as plt
 import os
+=======
+from typing import List, Dict
+>>>>>>> 758552ab891a91e87d0462964a58e529300be7c5
 
 app = FastAPI()
 
@@ -19,7 +23,11 @@ app.add_middleware(
 )
 
 # Leer el archivo CSV una sola vez al inicio de la aplicación
+<<<<<<< HEAD
 df = pd.read_csv('series_de_peliculas5.csv', on_bad_lines='skip')
+=======
+df = pd.read_csv('series_de_peliculas.csv')
+>>>>>>> 758552ab891a91e87d0462964a58e529300be7c5
 
 # Modificar el formato de los nombres en el DataFrame
 df['nombre_modificado'] = df['name'].str.replace(' ', '_').str.lower()  # Reemplazar espacios por guiones bajos y convertir a minúsculas
@@ -110,6 +118,7 @@ def get_mst_by_genre(genre: str):
 
     return mst_edges
 
+<<<<<<< HEAD
 # Endpoint para mostrar el grafo
 @app.get("/graph")
 def get_graph_image():
@@ -126,6 +135,8 @@ def get_graph_image():
 
     return FileResponse(image_path)
 
+=======
+>>>>>>> 758552ab891a91e87d0462964a58e529300be7c5
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8001)
