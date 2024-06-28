@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Recomendación de Películas</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-82R1BDtdvD5P7kw4ZlZtgKi53u7iCrJL0GL5UzK6o/87+Iw3FbIqDpS4S3GW65mZ8l//NqM4OrBqM6WqEBaSlA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="background">
-    </div>
+    
     <div class="container">
         <h1>Sistema de Recomendación de Películas</h1>
         <form id="search-form">
@@ -17,53 +17,98 @@
                 <label for="search-by1">Buscar por:</label>
                 <select id="search-by1" name="search-by1">
                     <option value="id">ID</option>
+                    <option value="name">Nombre</option>
                     <option value="genre">Género</option>
-                    <option value="recommendations">Recomendaciones</option>
-                    <option value="favorite">Anime Favorito</option>
                 </select>
                 <input type="text" id="search-term1" name="search-term1" placeholder="Ingrese término de búsqueda">
             </div>
-            <div class="search-field">
-                <label for="search-by2">Buscar por:</label>
-                <select id="search-by2" name="search-by2">
-                    <option value="id">ID</option>
-                    <option value="genre">Género</option>
-                    <option value="recommendations">Recomendaciones</option>
-                    <option value="favorite">Anime Favorito</option>
-                </select>
-                <input type="text" id="search-term2" name="search-term2" placeholder="Ingrese término de búsqueda">
-            </div>
             <button type="submit">Buscar</button>
         </form>
-        <div id="results">
-        </div>
-        <div class="social-icons">
-            <div class="social-icon">
-                <a href="https://wa.me/tunumerodeWhatsApp" target="_blank"><img src="image/wsp.png" alt="WhatsApp"></a>
-            </div>
-            <div class="social-icon">
-                <a href="https://www.facebook.com/tupagina" target="_blank"><img src="image/instagram.jpeg" alt="Facebook"></a>
+        <div id="results"></div>
+        <div class="graph-section">
+            <button id="show-graph-button">Mostrar Grafo</button>
+            <div id="graph-container">
+                <img id="graph-image" src="" alt="Graph Image" style="display: none;">
             </div>
         </div>
-        
-
-        
     </div>
+
+    <!-- Botón de Volver Arriba -->
+
     <script>
-        document.getElementById('search-form').addEventListener('submit', function(event) {
+        document.getElementById('search-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const searchBy1 = document.getElementById('search-by1').value;
             const searchTerm1 = document.getElementById('search-term1').value;
-            const searchBy2 = document.getElementById('search-by2').value;
-            const searchTerm2 = document.getElementById('search-term2').value;
             
-            console.log(`Búsqueda 1 - Por: ${searchBy1}, Término: ${searchTerm1}`);
-            console.log(`Búsqueda 2 - Por: ${searchBy2}, Término: ${searchTerm2}`);
-            
+            console.log(`Búsqueda - Por: ${searchBy1}, Término: ${searchTerm1}`);
+
+            try {
+                const response = await fetch(`http://localhost:8001/mst/${searchBy1}/${searchTerm1}`);
+                const data = await response.json();
+                console.log(data); 
+                displayResults(data); 
+            } catch (error) {
+                console.error('Error al obtener los datos:', error);
+            }
         });
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Limpiar resultados anteriores
+
+            data.forEach(movie => {
+                const movieDiv = document.createElement('div');
+                movieDiv.classList.add('movie');
+
+                const title = document.createElement('h2');
+                title.textContent = movie.nombre_modificado; // Mostrar el título de la película
+
+                const genre = document.createElement('p');
+                genre.textContent = `Género: ${movie.genre}`; // Mostrar el género de la película
+
+                const description = document.createElement('p');
+                description.textContent = `Descripción: ${movie.description}`; // Mostrar la descripción de la película
+
+                const image = document.createElement('img');
+                image.src = movie.image_url; // Mostrar la imagen de la película
+                image.alt = movie.nombre_modificado; // Altura de la imagen
+
+                movieDiv.appendChild(image);
+                movieDiv.appendChild(title);
+                movieDiv.appendChild(genre);
+                movieDiv.appendChild(description);
+
+                resultsDiv.appendChild(movieDiv);
+
+
+            });
+        }
+
+        document.getElementById('show-graph-button').addEventListener('click', async function() {
+            try {
+                const graphImage = document.getElementById('graph-image');
+                graphImage.src = 'http://localhost:8001/graph';
+                graphImage.style.display = 'block'; // Asegúrate de que la imagen esté visible
+
+                // Asegúrate de que la imagen esté completamente cargada antes de mostrarla
+                graphImage.onload = () => {
+                    console.log('Imagen cargada con éxito');
+                    graphImage.style.display = 'block'; // Asegúrate de que la imagen esté visible después de cargar
+                };
+
+                graphImage.onerror = () => {
+                    console.error('Error al cargar la imagen');
+                    graphImage.style.display = 'none'; // Oculta la imagen en caso de error
+                };
+
+            } catch (error) {
+                console.error('Error al obtener la imagen del grafo:', error);
+            }
+        });
+
+        // Funcionalidad para el botón de Volver Arriba
+
     </script>
 </body>
 </html>
-
-
-
